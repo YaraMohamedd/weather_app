@@ -2,16 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_app/constants.dart';
+import 'package:weather_app/controller/weather_controller.dart';
 import 'package:weather_app/widgets/custom_text_field.dart';
 
 import '../controller/authentication_controller.dart';
 
 class SignUp extends StatelessWidget {
+  final RxBool isVisible = RxBool(false);
+
   final FocusNode _passwordFocus = FocusNode();
   final FocusNode _mailFocus = FocusNode();
   TextEditingController emailController=TextEditingController();
   TextEditingController passController=TextEditingController();
   TextEditingController nameController=TextEditingController();
+  final weatherModel = Get.put(WeatherController());
 
   SignUp({Key key}) : super(key: key);
 
@@ -48,12 +52,25 @@ class SignUp extends StatelessWidget {
                           controller: emailController,
                           hintText: 'Email Address',
                         ),
-                        CustomTextField(
-                          label: '',
-
-                          controller: passController,
-                          hintText: 'Password',
-                        ),
+                     Obx(()=>    CustomTextField(
+                       label: '',
+                       maxLines: 1,
+                       secureText:
+                       isVisible.value ? false : true,
+                       suffixIcon: InkWell(
+                           onTap: () {
+                             isVisible.value = !isVisible.value;
+                           },
+                           child: Icon(
+                               isVisible.value == true
+                                   ? Icons.visibility_off
+                                   : Icons.visibility,
+                               size: 15,
+                               color: Colors.grey
+                           )),
+                       controller: passController,
+                       hintText: 'Password',
+                     ),),
                         // ignore: deprecated_member_use
 
                         Padding(
@@ -69,6 +86,7 @@ class SignUp extends StatelessWidget {
                               onPressed: (
 
                                   )async{
+                                 weatherModel.getLocationWeather();
                                 controller.registerUser(emailController.text, passController.text, nameController.text);
                               }),
                         )

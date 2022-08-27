@@ -7,13 +7,14 @@ class CustomTextField extends StatelessWidget {
   final String hintText;
   final TextEditingController controller;
   final Function onSubmitted;
+  final Function onChanged;
   final Widget suffixIcon;
   final bool secureText;
   final int maxLines;
   final Function validator;
   final String label;
   final String initialValue;
-  const CustomTextField({Key key, this.hintText, this.controller, this.onSubmitted, this.validator, this.initialValue, this.suffixIcon, this.secureText, this.maxLines, this.label}) : super(key: key);
+  const CustomTextField({Key key,this.onChanged, this.hintText, this.controller, this.onSubmitted, this.validator, this.initialValue, this.suffixIcon, this.secureText, this.maxLines, this.label}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +26,7 @@ class CustomTextField extends StatelessWidget {
         children: [
           Text(label),
           TextFormField(
+            onChanged: onChanged,
             maxLines: maxLines,
             initialValue: initialValue,
             controller: controller,
@@ -42,4 +44,5 @@ class CustomTextField extends StatelessWidget {
       ),
     );
   }
+
 }

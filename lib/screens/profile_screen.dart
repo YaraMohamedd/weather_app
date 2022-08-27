@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_app/constants.dart';
 import 'package:weather_app/controller/authentication_controller.dart';
@@ -17,6 +18,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  final RxBool isVisible = RxBool(false);
   TextEditingController nameController=TextEditingController();
   TextEditingController mailController=TextEditingController();
   TextEditingController passwordController=TextEditingController();
@@ -69,6 +71,7 @@ class _ProfileState extends State<Profile> {
                             children: [
 
                   CustomTextField(
+
                     label: 'Name',
                   hintText: snapshot.data['name'],
                   controller: nameController,
@@ -78,12 +81,25 @@ class _ProfileState extends State<Profile> {
                                 hintText: snapshot.data['email'],
                                 controller: mailController,
                               ),
-                              CustomTextField(
-                                label: 'Password',
-                                //  controller: mailController,
-                                hintText: snapshot.data['password'],
-                                controller: passwordController,
-                              ),
+                             Obx(()=> CustomTextField(
+                               maxLines: 1,
+                               secureText:
+                               isVisible.value ? false : true,
+                               suffixIcon: InkWell(
+                                   onTap: () {
+                                     isVisible.value = !isVisible.value;
+                                   },
+                                   child: Icon(
+                                       isVisible.value == true
+                                           ? Icons.visibility_off
+                                           : Icons.visibility,
+                                       size: 15,
+                                       color: Colors.grey
+                                   )),
+                               label: 'Password',
+                               //  controller: mailController,
+                               controller: passwordController,
+                             ),),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: RaisedButton(

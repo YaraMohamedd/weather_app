@@ -12,6 +12,8 @@ class Login extends StatelessWidget {
   final FocusNode _mailFocus = FocusNode();
   TextEditingController emailController=TextEditingController();
   TextEditingController passController=TextEditingController();
+  final RxBool isVisible = RxBool(false);
+  final weatherModel = Get.put(WeatherController());
 
   Login({Key key}) : super(key: key);
 
@@ -43,11 +45,25 @@ class Login extends StatelessWidget {
                            hintText: 'Email Address',
 
                          ),
-                         CustomTextField(
+                         Obx(()=>  CustomTextField(
+                           maxLines: 1,
+                           secureText:
+                           isVisible.value ? false : true,
+                           suffixIcon: InkWell(
+                               onTap: () {
+                                 isVisible.value = !isVisible.value;
+                               },
+                               child: Icon(
+                                   isVisible.value == true
+                                       ? Icons.visibility_off
+                                       : Icons.visibility,
+                                   size: 15,
+                                   color: Colors.grey
+                               )),
                            label: '',
-                             controller: passController,
+                           controller: passController,
                            hintText: 'Password',
-                         ),
+                         ),),
                          // ignore: deprecated_member_use
                          Padding(
                            padding: const EdgeInsets.all(8.0),
@@ -65,6 +81,7 @@ class Login extends StatelessWidget {
                                  SharedPreferences prefs = await SharedPreferences.getInstance();
                                  prefs.setString('email', emailController.text);
                                  prefs.setString('password', passController.text);
+                                 weatherModel.getLocationWeather();
                                controller.loginUser(emailController.text, passController.text);
                                  // WeatherController().getWeatherData();
                                }),

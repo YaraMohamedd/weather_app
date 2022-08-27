@@ -35,16 +35,16 @@ dependencies:
   firebase_auth:
   cloud_firestore:
   get:
-  supercharged:
+
   intl:
   location:
-  dio:
+
   geolocator:
   flutter_spinkit:
   get_storage:
-  simple_animations: ^2.4.2
+
   flutter_weather_icons:
-  smooth_page_indicator:
+
   http:
   shared_preferences:
   geocoder:

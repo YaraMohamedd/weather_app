@@ -6,6 +6,7 @@ import 'location_screen.dart';
 
 class LoadingScreen extends StatefulWidget {
 
+
   const LoadingScreen({Key key}) : super(key: key);
 
   @override
@@ -23,7 +24,14 @@ class _LoadingScreenState extends State<LoadingScreen> {
     WeatherController weatherModel = WeatherController();
     var ans = await weatherModel.getLocationWeather();
 
-   Get.to(LocationScreen());
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LocationScreen(
+          locationWeather: ans,
+        ),
+      ),
+    );
   }
 
   @override

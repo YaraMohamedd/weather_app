@@ -18,7 +18,7 @@ class AuthenticationController extends GetxController{
         , password: password);
     User user = result.user;
     if (user != null) {
-      WeatherSnackBars.successSnackBar(message: 'User logged in successfully');
+      WeatherSnackBars.successSnackBar(message: 'User login successfully');
 
       Get.to(LoadingScreen());
     }
@@ -35,7 +35,7 @@ class AuthenticationController extends GetxController{
             'name':name,
             'password':password
           });
-      WeatherSnackBars.successSnackBar(message: 'Account created successfully in successfully');
+      WeatherSnackBars.successSnackBar(message: 'Account created successfully ');
 
       Get.to(LocationScreen());
       Get.appUpdate();

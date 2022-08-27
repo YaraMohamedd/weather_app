@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_app/constants.dart';
 import 'package:weather_app/widgets/custom_nav_bar.dart';
 
@@ -42,10 +43,13 @@ class CityScreen extends StatelessWidget {
                   decoration:  InputDecoration(
                     filled: true,
                     suffixIcon: InkWell(
-                      onTap: (){
-                        Navigator.pop(context, cityName);
+                      onTap: ()async{
+                         SharedPreferences prefs=await SharedPreferences.getInstance();
+                         prefs.setString('cityName', cityName);
+                        Navigator.pop(context,cityName);
 
                       },
+
                         child: Icon(Icons.search)),
                     fillColor: Colors.white,
                     icon: const Icon(
