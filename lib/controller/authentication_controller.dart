@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:weather_app/screens/loading_screen.dart';
 import 'package:weather_app/screens/location_screen.dart';
 import 'package:weather_app/services/location.dart';
+import 'package:weather_app/widgets/snack_bar.dart';
 final _firestore = FirebaseFirestore.instance;
 User loggedInUser;
 final userRef = _firestore.collection('Users');
@@ -17,7 +18,9 @@ class AuthenticationController extends GetxController{
         , password: password);
     User user = result.user;
     if (user != null) {
-       Get.to(LoadingScreen());
+      WeatherSnackBars.successSnackBar(message: 'User logged in successfully');
+
+      Get.to(LoadingScreen());
     }
   }
   Future registerUser(String mail,String password,String name)async{
@@ -32,6 +35,7 @@ class AuthenticationController extends GetxController{
             'name':name,
             'password':password
           });
+      WeatherSnackBars.successSnackBar(message: 'Account created successfully in successfully');
 
       Get.to(LocationScreen());
       Get.appUpdate();

@@ -7,6 +7,7 @@ import 'package:weather_app/constants.dart';
 import 'package:weather_app/controller/authentication_controller.dart';
 import 'package:weather_app/widgets/custom_nav_bar.dart';
 import 'package:weather_app/widgets/custom_text_field.dart';
+import 'package:weather_app/widgets/snack_bar.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key key}) : super(key: key);
@@ -69,13 +70,11 @@ class _ProfileState extends State<Profile> {
 
                   CustomTextField(
                     label: 'Name',
-                  //   controller: nameController,
                   hintText: snapshot.data['name'],
                   controller: nameController,
                   ),
                               CustomTextField(
                                 label: 'Email',
-                                //  controller: mailController,
                                 hintText: snapshot.data['email'],
                                 controller: mailController,
                               ),
@@ -90,13 +89,20 @@ class _ProfileState extends State<Profile> {
                     child: RaisedButton(
 
                         onPressed: (){
-                    FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser.uid).update({
-                    'email':mailController.text,
-                    'name':nameController.text,
-                      'password':passwordController.text,
 
+                            FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser.uid).update({
+                              'email':(mailController.text==''||snapshot.data['email']=='')?snapshot.data['email']:mailController.text,
+                              'name':(nameController.text==''||snapshot.data['name']=='')?snapshot.data['name']:nameController.text,
+                              'password':(passwordController.text==''||snapshot.data['password']=='')?snapshot.data['password']:passwordController.text,
 
-                    });
+                            });
+                             setState(() {
+                               mailController.clear();
+                               passwordController.clear();
+                               nameController.clear();
+                             });
+                            WeatherSnackBars.successSnackBar(message: 'User data updated Successfully');
+
                     },
                     child: const Text('Update Data',style: TextStyle(color: buttonTextColor),),
                     shape: RoundedRectangleBorder(

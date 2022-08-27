@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:weather_app/constants.dart';
 import 'package:weather_app/widgets/custom_nav_bar.dart';
 import 'package:weather_app/widgets/custom_text_field.dart';
+import 'package:weather_app/widgets/snack_bar.dart';
 
 import '../controller/weather_controller.dart';
 import 'city_screen.dart';
@@ -92,9 +93,14 @@ class _LocationScreenState extends State<LocationScreen> {
                                     borderRadius: BorderRadius.circular(20)
                                 ),color: buttonColor,onPressed: ()async{
                               FirebaseFirestore.instance.collection('Location').doc(FirebaseAuth.instance.currentUser.uid).update({
-                                'cityName':locationController.text,
+                                'cityName':(snapshot.data['cityName']==''||locationController.text=='')?snapshot.data['cityName']:locationController.text,
 
                               });
+                              WeatherSnackBars.successSnackBar(message: 'Location updated Successfully');
+                              setState(() {
+                                locationController.clear();
+                              });
+
                             }),
                           )
                         ],
